@@ -1,0 +1,54 @@
+form.html
+  
+<!-- Save as form.html -->
+<form action="form.php" method="post">
+  Name: <input type="text" name="name"><br><br>
+  Email: <input type="text" name="email"><br><br>
+  Message: <textarea name="message"></textarea><br><br>
+  <input type="submit" name="submit" value="Submit">
+</form>
+
+form.php
+    
+<?php
+$name = $email = $message = "";
+$nameErr = $emailErr = $messageErr = "";
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    if (empty($_POST["name"])) {
+        $nameErr = "Name is required";
+    } else {
+        $name = clean_input($_POST["name"]);
+        if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
+            $nameErr = "Only letters and white space allowed";
+        }
+    }
+
+    if (empty($_POST["email"])) {
+        $emailErr = "Email is required";
+    } else {
+        $email = clean_input($_POST["email"]);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Invalid email format";
+        }
+    }
+
+    if (empty($_POST["message"])) {
+        $messageErr = "Message is required";
+    } else {
+        $message = clean_input($_POST["message"]);
+    }
+
+    if (empty($nameErr) && empty($emailErr) && empty($messageErr)) {
+        echo "Form submitted successfully!<br>";
+        echo "Name: $name<br>Email: $email<br>Message: $message";
+    } else {
+        echo "<p>$nameErr</p><p>$emailErr</p><p>$messageErr</p>";
+    }
+}
+
+function clean_input($data) {
+    return htmlspecialchars(stripslashes(trim($data)));
+}
+?>
