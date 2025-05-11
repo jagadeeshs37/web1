@@ -1,0 +1,56 @@
+✅ Sample Program 2: Display Multiple Users
+🔹 Code:
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Multiple Users - JSON Example</title>
+</head>
+<body>
+  <h1>User List</h1>
+  <div id="userList"></div>
+
+  <script>
+    // JSON array as a string
+    const jsonString = `[
+      {"name": "Alice", "age": 28, "email": "alice@example.com"},
+      {"name": "Bob", "age": 34, "email": "bob@example.com"},
+      {"name": "Charlie", "age": 22, "email": "charlie@example.com"}
+    ]`;
+
+    // Parse JSON string into JavaScript array
+    const users = JSON.parse(jsonString);
+
+    // Get the target div
+    const container = document.getElementById("userList");
+
+    // Build HTML content
+    users.forEach(user => {
+      const userHTML = `
+        <div style="margin-bottom: 15px;">
+          <strong>Name:</strong> ${user.name}<br>
+          <strong>Age:</strong> ${user.age}<br>
+          <strong>Email:</strong> ${user.email}
+        </div>
+      `;
+      container.innerHTML += userHTML;
+    });
+  </script>
+</body>
+</html>
+💾 How to Save and Run
+✅ Step 1: Save the File
+Open Notepad or any text/code editor.
+
+Paste the code above.
+
+Save it as: users.html
+
+✅ Step 2: Run It
+Double-click the users.html file to open it in your browser.
+
+You’ll see the list of users with their name, age, and email displayed.
+
+Would you like a version where the JSON data comes from an external file (like data.json)?
