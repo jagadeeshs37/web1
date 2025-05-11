@@ -1,0 +1,110 @@
+XML file: Holds data (e.g., a list of books).
+
+XSL file: Defines how to display the XML.
+
+HTML + JavaScript (AJAX): Loads the XML and XSL, transforms them, and displays the result.
+
+🗂 You’ll need to create 3 files:
+📄 1. books.xml
+xml
+Copy
+Edit
+<?xml version="1.0" encoding="UTF-8"?>
+<catalog>
+  <book>
+    <title>JavaScript: The Good Parts</title>
+    <author>Douglas Crockford</author>
+  </book>
+  <book>
+    <title>Learning XML</title>
+    <author>Erik T. Ray</author>
+  </book>
+</catalog>
+📄 2. books.xsl
+xml
+Copy
+Edit
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+  <xsl:template match="/catalog">
+    <html>
+    <body>
+      <h2>Book Catalog</h2>
+      <ul>
+        <xsl:for-each select="book">
+          <li>
+            <strong><xsl:value-of select="title"/></strong> -
+            <xsl:value-of select="author"/>
+          </li>
+        </xsl:for-each>
+      </ul>
+    </body>
+    </html>
+  </xsl:template>
+
+</xsl:stylesheet>
+📄 3. index.html
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html>
+<head>
+  <title>XSLT with AJAX Example</title>
+</head>
+<body>
+  <div id="result">Loading...</div>
+
+  <script>
+    function loadXMLDoc(filename, callback) {
+      const xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          callback(this.responseXML);
+        }
+      };
+      xhttp.open("GET", filename, true);
+      xhttp.send();
+    }
+
+    function displayResult(xml, xsl) {
+      // code for modern browsers
+      if (window.XSLTProcessor) {
+        const xsltProcessor = new XSLTProcessor();
+        xsltProcessor.importStylesheet(xsl);
+        const resultDocument = xsltProcessor.transformToFragment(xml, document);
+        document.getElementById("result").appendChild(resultDocument);
+      } else {
+        document.getElementById("result").innerHTML = "XSLT not supported in this browser.";
+      }
+    }
+
+    // Load both XML and XSL, then call displayResult
+    loadXMLDoc("books.xml", function (xml) {
+      loadXMLDoc("books.xsl", function (xsl) {
+        displayResult(xml, xsl);
+      });
+    });
+  </script>
+</body>
+</html>
+🧪 How to Run This
+✅ Option 1: Use a Local Server (RECOMMENDED)
+Browsers block AJAX requests to local files for security. So:
+
+Place all three files (index.html, books.xml, books.xsl) in the same folder.
+
+Run a local web server:
+
+Python 3:
+
+bash
+Copy
+Edit
+python -m http.server 8000
+Then open: http://localhost:8000/index.html in your browser.
+
+✅ Option 2: Use an Online Editor (like CodeSandbox or JSFiddle)
+You can upload the XML and XSL files as static assets and link to them.
