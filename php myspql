@@ -1,0 +1,138 @@
+
+🔹 Step 1: Create a Database and Table in phpMyAdmin
+Start XAMPP, and start Apache & MySQL.
+
+Go to http://localhost/phpmyadmin
+
+Create a new database called: formdb
+
+Run this SQL to create a contacts table:
+
+sql
+Copy
+Edit
+CREATE TABLE contacts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  email VARCHAR(100) NOT NULL,
+  message TEXT NOT NULL,
+  submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+🔹 Step 2: Create the PHP File (e.g., form.php) in XAMPP
+Save this file to:
+C:\xampp\htdocs\form_validation\form.php
+
+php
+Copy
+Edit
+<?php
+// Define variables and set to empty
+$name = $email = $message = "";
+$nameErr = $emailErr = $messageErr = "";
+$successMsg = "";
+
+// Process form on POST
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $isValid = true;
+
+    // Validate Name
+    if (empty($_POST["name"])) {
+        $nameErr = "Name is required";
+        $isValid = false;
+    } else {
+        $name = clean_input($_POST["name"]);
+        if (!preg_match("/^[a-zA-Z-' ]*$/", $name)) {
+            $nameErr = "Only letters and white space allowed";
+            $isValid = false;
+        }
+    }
+
+    // Validate Email
+    if (empty($_POST["email"])) {
+        $emailErr = "Email is required";
+        $isValid = false;
+    } else {
+        $email = clean_input($_POST["email"]);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $emailErr = "Invalid email format";
+            $isValid = false;
+        }
+    }
+
+    // Validate Message
+    if (empty($_POST["message"])) {
+        $messageErr = "Message is required";
+        $isValid = false;
+    } else {
+        $message = clean_input($_POST["message"]);
+    }
+
+    // If no errors, insert into database
+    if ($isValid) {
+        // Database connection
+        $conn = new mysqli("localhost", "root", "", "formdb");
+
+        // Check connection
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
+
+        // Prepare SQL
+        $stmt = $conn->prepare("INSERT INTO contacts (name, email, message) VALUES (?, ?, ?)");
+        $stmt->bind_param("sss", $name, $email, $message);
+
+        if ($stmt->execute()) {
+            $successMsg = "Form submitted and data inserted successfully!";
+            // Clear input after successful insert
+            $name = $email = $message = "";
+        } else {
+            echo "Error: " . $stmt->error;
+        }
+
+        $stmt->close();
+        $conn->close();
+    }
+}
+
+// Sanitization function
+function clean_input($data) {
+    return htmlspecialchars(stripslashes(trim($data)));
+}
+?>
+
+<!-- HTML Form -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PHP Form Validation with MySQL</title>
+</head>
+<body>
+<h2>Contact Form</h2>
+<p style="color:green;"><?php echo $successMsg; ?></p>
+<form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+    Name: <input type="text" name="name" value="<?php echo $name; ?>">
+    <span style="color:red;"><?php echo $nameErr; ?></span><br><br>
+
+    Email: <input type="text" name="email" value="<?php echo $email; ?>">
+    <span style="color:red;"><?php echo $emailErr; ?></span><br><br>
+
+    Message: <textarea name="message"><?php echo $message; ?></textarea>
+    <span style="color:red;"><?php echo $messageErr; ?></span><br><br>
+
+    <input type="submit" name="submit" value="Submit">
+</form>
+</body>
+</html>
+🔹 Step 3: Run in Browser
+Open your browser and go to:
+
+arduino
+Copy
+Edit
+http://localhost/form_validation/form.php
+✅ Result:
+Form will validate input.
+
+On success, data will be saved into formdb.contacts.
+
+Errors are shown beside each input if fields are incorrect.
