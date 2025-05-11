@@ -1,0 +1,102 @@
+
+🔹 1. Copy the Code
+Here’s the complete code again:
+
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JavaScript Form Validation</title>
+  <style>
+    .error { color: red; }
+  </style>
+</head>
+<body>
+
+<h2>Contact Form</h2>
+<form name="contactForm" onsubmit="return validateForm()">
+  Name: <input type="text" name="name"><br>
+  <span class="error" id="nameErr"></span><br>
+
+  Email: <input type="text" name="email"><br>
+  <span class="error" id="emailErr"></span><br>
+
+  Message: <textarea name="message"></textarea><br>
+  <span class="error" id="messageErr"></span><br>
+
+  <input type="submit" value="Submit">
+</form>
+
+<script>
+function validateForm() {
+  let name = document.forms["contactForm"]["name"].value.trim();
+  let email = document.forms["contactForm"]["email"].value.trim();
+  let message = document.forms["contactForm"]["message"].value.trim();
+
+  let nameErr = emailErr = messageErr = "";
+  let isValid = true;
+
+  // Clear previous errors
+  document.getElementById("nameErr").innerText = "";
+  document.getElementById("emailErr").innerText = "";
+  document.getElementById("messageErr").innerText = "";
+
+  // Name validation
+  if (name === "") {
+    nameErr = "Name is required";
+    isValid = false;
+  } else if (!/^[a-zA-Z\s'-]+$/.test(name)) {
+    nameErr = "Only letters and spaces allowed";
+    isValid = false;
+  }
+
+  // Email validation
+  if (email === "") {
+    emailErr = "Email is required";
+    isValid = false;
+  } else if (!/^\S+@\S+\.\S+$/.test(email)) {
+    emailErr = "Invalid email format";
+    isValid = false;
+  }
+
+  // Message validation
+  if (message === "") {
+    messageErr = "Message is required";
+    isValid = false;
+  }
+
+  // Set error messages
+  document.getElementById("nameErr").innerText = nameErr;
+  document.getElementById("emailErr").innerText = emailErr;
+  document.getElementById("messageErr").innerText = messageErr;
+
+  return isValid;
+}
+</script>
+
+</body>
+</html>
+🔹 2. Save the Code
+Open Notepad (or any text/code editor).
+
+Paste the code.
+
+Save the file as:
+form.html
+(Be sure to choose "All Files" and not ".txt" format.)
+
+🔹 3. Run the Code
+Locate the file form.html on your computer.
+
+Double-click it or right-click → Open with → Your Browser (e.g., Chrome, Firefox).
+
+The form opens in your browser.
+
+Try submitting without filling — you’ll see JavaScript validation in action.
+
+❗ Important Notes:
+This works offline and doesn't need a server (like XAMPP or Tomcat).
+
+It’s purely client-side validation — still add PHP or server-side checks to handle real submissions securely.
