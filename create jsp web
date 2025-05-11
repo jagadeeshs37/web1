@@ -1,0 +1,50 @@
+ To Run JSP Files Locally, Use Apache Tomcat, Not XAMPP
+However, you can still run PHP (via XAMPP) and JSP (via Tomcat) on the same system.
+
+Step-by-Step: Running JSP Locally Using Tomcat
+🔹 Step 1: Download & Install Apache Tomcat
+Go to https://tomcat.apache.org/
+
+Download the latest version (e.g. Tomcat 9 or 10)
+
+Extract it to a folder, e.g. C:\tomcat
+
+🔹 Step 2: Create a Simple JSP File
+Go to: C:\tomcat\webapps\ROOT\
+
+Create a new file named: hello.jsp
+
+Add the following code:
+
+jsp
+Copy
+Edit
+
+<%@ page language="java" contentType="text/html; charset=UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My First JSP Page</title>
+</head>
+<body>
+    <h1>Hello, this is a JSP page!</h1>
+    <p>Current Time: <%= new java.util.Date() %></p>
+</body>
+</html>
+
+🔹 Step 3: Start Tomcat Server
+Go to C:\tomcat\bin
+
+Run startup.bat (Windows) or startup.sh (Linux/macOS)
+
+This starts the local server at:
+http://localhost:8080
+
+🔹 Step 4: Open in Browser
+Go to:
+
+bash
+Copy
+Edit
+http://localhost:8080/hello.jsp
+You should see your JSP page rendered with the current date/time.
