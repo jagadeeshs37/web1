@@ -1,0 +1,92 @@
+📄 1. employees.xml — XML Data
+xml
+Copy
+Edit
+<?xml version="1.0" encoding="UTF-8"?>
+<company xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="employees.xsd">
+  <employee>
+    <id>101</id>
+    <name>John Doe</name>
+    <department>Engineering</department>
+    <email>john.doe@example.com</email>
+  </employee>
+  <employee>
+    <id>102</id>
+    <name>Jane Smith</name>
+    <department>Marketing</department>
+    <email>jane.smith@example.com</email>
+  </employee>
+</company>
+📄 2. employees.xsd — XML Schema Definition
+xml
+Copy
+Edit
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="company">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="employee" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="id" type="xs:integer"/>
+              <xs:element name="name" type="xs:string"/>
+              <xs:element name="department" type="xs:string"/>
+              <xs:element name="email" type="xs:string"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+</xs:schema>
+📄 3. index.php — PHP Script to Validate and Display
+php
+Copy
+Edit
+<?php
+$xml = new DOMDocument();
+$xml->load("employees.xml");
+
+if ($xml->schemaValidate("employees.xsd")) {
+    echo "<h2>Employee List (Validated Successfully)</h2>";
+    $employees = simplexml_load_file("employees.xml");
+
+    echo "<table border='1' cellpadding='10'>";
+    echo "<tr><th>ID</th><th>Name</th><th>Department</th><th>Email</th></tr>";
+
+    foreach ($employees->employee as $emp) {
+        echo "<tr>";
+        echo "<td>" . $emp->id . "</td>";
+        echo "<td>" . $emp->name . "</td>";
+        echo "<td>" . $emp->department . "</td>";
+        echo "<td>" . $emp->email . "</td>";
+        echo "</tr>";
+    }
+
+    echo "</table>";
+} else {
+    echo "<p style='color:red;'>XML Validation Failed!</p>";
+}
+?>
+🧪 How to Run This (On Local Server)
+✅ Step-by-step:
+Install a local server like XAMPP, WAMP, or MAMP.
+
+Place all 3 files (employees.xml, employees.xsd, index.php) in the htdocs folder (for XAMPP).
+
+Example: C:\xampp\htdocs\employee_demo\
+
+Start Apache via XAMPP Control Panel.
+
+Open your browser and go to:
+
+arduino
+Copy
+Edit
+http://localhost/employee_demo/index.php
+You should see a table of employees if the XML is valid.
+
