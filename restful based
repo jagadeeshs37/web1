@@ -1,0 +1,72 @@
+You’ll need 2 files in a folder like rest_api_demo inside your XAMPP htdocs.
+
+📄 1. api.php – The REST API (PHP)
+php
+Copy
+Edit
+<?php
+header("Content-Type: application/json");
+
+$employees = [
+  ["id" => 1, "name" => "John Doe", "department" => "Engineering"],
+  ["id" => 2, "name" => "Jane Smith", "department" => "Marketing"],
+  ["id" => 3, "name" => "Alice Brown", "department" => "HR"]
+];
+
+// Convert array to JSON and output
+echo json_encode($employees);
+?>
+This is a RESTful GET service. When a client makes a GET request to api.php, it returns JSON data.
+
+📄 2. index.html – Client-side HTML + JavaScript
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Employee List - REST API</title>
+</head>
+<body>
+  <h1>Employee List (From REST API)</h1>
+  <ul id="employeeList">Loading...</ul>
+
+  <script>
+    fetch("api.php")
+      .then(response => response.json())
+      .then(data => {
+        const list = document.getElementById("employeeList");
+        list.innerHTML = "";
+        data.forEach(emp => {
+          const item = document.createElement("li");
+          item.textContent = `${emp.name} (${emp.department})`;
+          list.appendChild(item);
+        });
+      })
+      .catch(error => {
+        document.getElementById("employeeList").innerHTML = "Failed to load data.";
+        console.error("Error fetching data:", error);
+      });
+  </script>
+</body>
+</html>
+🧪 How to Run This on Your PC
+✅ Step-by-Step Using XAMPP
+Install XAMPP if not already installed.
+
+Download: https://www.apachefriends.org/index.html
+
+Copy both files (api.php, index.html) into:
+
+makefile
+Copy
+Edit
+C:\xampp\htdocs\rest_api_demo\
+Start Apache using the XAMPP Control Panel.
+
+Open your browser and go to:
+
+arduino
+Copy
+Edit
+http://localhost/rest_api_demo/index.html
