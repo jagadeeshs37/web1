@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HTML Tags Example</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    table, th, td { border: 1px solid black; border-collapse: collapse; padding: 8px; }
+    form { margin-top: 20px; }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to My Web Page</h1>
+
+  <p>This is a <strong>paragraph</strong> with some <em>emphasized</em> and <u>underlined</u> text.</p>
+
+  <h2>Image Example</h2>
+  <img src="https://via.placeholder.com/150" alt="Sample Image">
+
+  <h2>List Examples</h2>
+  <h3>Unordered List</h3>
+  <ul>
+    <li>HTML</li>
+    <li>CSS</li>
+    <li>JavaScript</li>
+  </ul>
+
+  <h3>Ordered List</h3>
+  <ol>
+    <li>Login</li>
+    <li>View Dashboard</li>
+    <li>Logout</li>
+  </ol>
+
+  <h2>Table Example</h2>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Department</th>
+    </tr>
+    <tr>
+      <td>John Doe</td>
+      <td>Engineering</td>
+    </tr>
+    <tr>
+      <td>Jane Smith</td>
+      <td>Marketing</td>
+    </tr>
+  </table>
+
+  <h2>Form Example</h2>
+  <form>
+    <label for="name">Name:</label><br>
+    <input type="text" id="name" name="name"><br><br>
+
+    <label for="email">Email:</label><br>
+    <input type="email" id="email" name="email"><br><br>
+
+    <label>Gender:</label><br>
+    <input type="radio" name="gender" value="male"> Male<br>
+    <input type="radio" name="gender" value="female"> Female<br><br>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <h2>Link Example</h2>
+  <p>Visit <a href="https://www.example.com" target="_blank">Example Website</a>.</p>
+
+</body>
+</html>
