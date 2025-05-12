@@ -1,0 +1,162 @@
+✅ Final Goal
+Frontend: Adds and lists tasks (like before).
+
+Backend: Provides REST API to save and fetch tasks.
+
+MongoDB: Stores tasks persistently.
+
+🗂 Folder Structure
+pgsql
+Copy
+Edit
+task-app/
+├── public/
+│   └── index.html
+├── models/
+│   └── Task.js
+├── routes/
+│   └── taskRoutes.js
+├── server.js
+├── package.json
+📄 1. public/index.html
+html
+Copy
+Edit
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Task Manager (MongoDB)</title>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    input { padding: 5px; }
+    button { padding: 6px 12px; }
+  </style>
+</head>
+<body>
+
+  <h1>Task Manager (MongoDB)</h1>
+  
+  <input type="text" id="taskInput" placeholder="Enter task...">
+  <button onclick="addTask()">Add Task</button>
+
+  <h2>Task List</h2>
+  <ul id="taskList"></ul>
+
+  <script>
+    async function loadTasks() {
+      const res = await fetch("/api/tasks");
+      const tasks = await res.json();
+      const list = document.getElementById("taskList");
+      list.innerHTML = "";
+      tasks.forEach(task => {
+        const li = document.createElement("li");
+        li.textContent = task.name;
+        list.appendChild(li);
+      });
+    }
+
+    async function addTask() {
+      const input = document.getElementById("taskInput");
+      const task = input.value.trim();
+      if (task === "") return;
+
+      await fetch("/api/tasks", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: task })
+      });
+
+      input.value = "";
+      loadTasks();
+    }
+
+    window.onload = loadTasks;
+  </script>
+
+</body>
+</html>
+📄 2. models/Task.js
+js
+Copy
+Edit
+const mongoose = require('mongoose');
+
+const taskSchema = new mongoose.Schema({
+  name: String
+});
+
+module.exports = mongoose.model('Task', taskSchema);
+📄 3. routes/taskRoutes.js
+js
+Copy
+Edit
+const express = require('express');
+const router = express.Router();
+const Task = require('../models/Task');
+
+// GET all tasks
+router.get('/', async (req, res) => {
+  const tasks = await Task.find();
+  res.json(tasks);
+});
+
+// POST a new task
+router.post('/', async (req, res) => {
+  const task = new Task(req.body);
+  await task.save();
+  res.json({ message: 'Task saved' });
+});
+
+module.exports = router;
+📄 4. server.js
+js
+Copy
+Edit
+const express = require('express');
+const mongoose = require('mongoose');
+const path = require('path');
+const taskRoutes = require('./routes/taskRoutes');
+
+const app = express();
+const PORT = 3000;
+
+// MongoDB connection
+mongoose.connect('mongodb://localhost:27017/taskDB', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log('MongoDB connected'))
+  .catch(err => console.error(err));
+
+// Middleware
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
+
+// Routes
+app.use('/api/tasks', taskRoutes);
+
+// Start server
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
+📦 5. Initialize Project and Install Packages
+bash
+Copy
+Edit
+npm init -y
+npm install express mongoose
+🚀 How to Run the App
+✅ Step-by-Step
+Make sure MongoDB is running (via mongod or MongoDB Compass).
+
+Start the server:
+
+bash
+Copy
+Edit
+node server.js
+Open your browser and go to:
+
+arduino
+Copy
+Edit
+http://localhost:3000
